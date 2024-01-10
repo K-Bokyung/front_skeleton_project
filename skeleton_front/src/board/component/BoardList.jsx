@@ -8,13 +8,13 @@ const BoardList = () => {
   const [boardList, setboardList] = useState({ status: '', message: '', data: [] });
 
   const getBoardList = useCallback(async () => {
-    const resp = await axios.get('http://localhost:8000/board/list');
+    const resp = await axios.get('http://localhost:8000/board/boardList');
     setboardList(resp.data);
   });
 
   useEffect(() => {
-    setboardList();
-  }, [getBoardList]);
+    getBoardList();
+  }, []);
 
   return (
     <main id='main'>

@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const homeRouter = require('./home/homeRouter');
 const userRouter = require('./user/userRouter');
+const boardRouter = require('./board/boardRouter');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // http://localhost:8000/
 app.use('/', homeRouter);
 app.use('/users', userRouter);
+app.use('/board', boardRouter);
 
 // 404
 app.use((req, res, next) => {

@@ -21,6 +21,7 @@ router.post('/insert', function (req, res, next) {
 router.get('/board/:id', function (req, res, next) {
   console.log('board router, board.........');
   const data = req.params;
+  console.log(data);
   boardDAO.board(data, (resp) => {
     res.json(resp);
   });

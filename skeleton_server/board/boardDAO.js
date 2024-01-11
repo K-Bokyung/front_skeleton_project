@@ -22,7 +22,6 @@ const boardDAO = {
       console.log(error.message);
       return { status: 500, message: '조회 실패', error: error };
     } finally {
-      console.log('dao boardlist finally');
       if (conn !== null) conn.release();
     }
   },
@@ -35,12 +34,27 @@ const boardDAO = {
       callback({ status: 200, message: 'OK', data: resp });
       console.log(resp, 'insert callback 완료');
     } catch (error) {
+      console.log(error.message);
       return { status: 500, message: '게시물 입력 실패', error: error };
     } finally {
       if (conn !== null) conn.release();
     }
   },
-  board: async (item, callback) => {},
+  board: async (item, callback) => {
+    let conn = null;
+    try {
+      console.log('board try 시작');
+      conn = await getPool().getConnection();
+      const [resp] = await conn.query(sql.board, [item.id]);
+      callback({ status: 200, message: 'OK', data: resp });
+      console.log(resp, 'board callback 완료');
+    } catch (error) {
+      console.log(error.message);
+      return { status: 500, message: '게시물 입력 실패', error: error };
+    } finally {
+      if (conn !== null) conn.release();
+    }
+  },
 };
 
 module.exports = boardDAO;

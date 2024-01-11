@@ -1,36 +1,12 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const BoardDetail = () => {
-  const navigate = useNavigate();
-
-  const [content, setContent] = useState({
-    name: '',
-    content: '',
-    title: '',
-    cnt: '',
-    createAt: '',
-  });
-
-  const { id } = useParams();
-
-  const getBoard = async () => {
-    const resp = await axios.get('http://localhost:8000/boards/board/' + id);
-    setContent(resp.data.data);
-  };
-
-  const deleteBoard = async (id) => {
-    // 버튼 클릭시에 호출되어.. 서버에 매개변수 데이터 삭제되게 요청..
-    await axios.post('http://localhost:8000/boards/delete/' + id);
-    // 삭제후 화면 목록으로 자동 전환..
-    navigate('/board/list');
-  };
-
-  useEffect(() => {
-    getBoard();
-  }, []);
-
+const BoardUpdate = () => {
+  // controlled component 처리..
+  // 컴포넌트가 나오자 마자.. 서버에서 데이터 획득..
+  // 획득한 데이터가 화면에 출력되고.. 유저가 수정...
+  // 즉 서버 연동은 2번 발생한다..
   return (
     <main id='main'>
       {/* <!-- ======= Intro Single ======= --> */}
@@ -39,8 +15,8 @@ const BoardDetail = () => {
           <div className='row'>
             <div className='col-md-12 col-lg-8'>
               <div className='title-single-box'>
-                <h1 className='title-single'>게시물 상세</h1>
-                <span className='color-text-a'>board</span>
+                <h1 className='title-single'>게시물 수정</h1>
+                <span className='color-text-a'>Update</span>
               </div>
             </div>
             <div className='col-md-12 col-lg-4'>
@@ -66,15 +42,28 @@ const BoardDetail = () => {
                 <tbody>
                   <tr>
                     <td>타이틀</td>
-                    <td>{content.title}</td>
+                    <td>
+                      <input
+                        type='text'
+                        className='form-control'
+                        name='title'
+                        value={boardContent.title}
+                        onChange={changeBoardContent}
+                      />
+                    </td>
                   </tr>
                   <tr>
                     <td>내용</td>
-                    <td>{content.content}</td>
-                  </tr>
-                  <tr>
-                    <td>작성일</td>
-                    <td>{content.createAt}</td>
+                    <td>
+                      <textarea
+                        cols='80'
+                        rows='10'
+                        name='content'
+                        className='form-control'
+                        value={boardContent.content}
+                        onChange={changeBoardContent}
+                      ></textarea>
+                    </td>
                   </tr>
                   <tr>
                     <td colSpan={2} className='text-end'>
@@ -83,21 +72,14 @@ const BoardDetail = () => {
                         className='btn btn-primary btn-sm'
                         onClick={() => navigate('/board/list')}
                       >
-                        목록
+                        취소
                       </button>{' '}
                       <button
                         type='button'
                         className='btn btn-warning btn-sm'
-                        onClick={() => navigate('/board/update/' + content.id)}
+                        onClick={updateBoard}
                       >
                         수정
-                      </button>
-                      <button
-                        type='button'
-                        className='btn btn-warning btn-sm'
-                        onClick={() => deleteBoard(content.id)}
-                      >
-                        삭제
                       </button>
                     </td>
                   </tr>
@@ -110,4 +92,4 @@ const BoardDetail = () => {
     </main>
   );
 };
-export default BoardDetail;
+export default BoardUpdate;

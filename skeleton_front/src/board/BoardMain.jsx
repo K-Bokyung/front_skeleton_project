@@ -12,6 +12,7 @@ const BoardMain = () => {
         <Route path='/list' element={<BoardList />} />
         <Route path='/insert' element={<BoardInsert />} />
         <Route path='/detail/:id' element={<BoardDetail />} />
+        <Route path='/delete/:id' element={<BoardDetail />} />
       </Routes>
     </div>
   );

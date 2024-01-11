@@ -27,4 +27,14 @@ router.get('/board/:id', function (req, res, next) {
   });
 });
 
+router.post('/delete/:id', function (req, res, next) {
+  console.log('boardRouter, delete..........');
+  const id = req.params.id;
+  boardDAO.delete(id, (resp) => {
+    res.json(resp);
+  });
+});
+
+router.post('/update', function (req, res, next) {});
+
 module.exports = router;

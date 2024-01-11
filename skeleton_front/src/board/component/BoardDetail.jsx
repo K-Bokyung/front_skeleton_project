@@ -10,9 +10,9 @@ const BoardDetail = () => {
   const { id } = useParams();
 
   const getBoard = useCallback(async () => {
-    const resp = await axios.post('http://localhost:8000/boards/board/:id');
-    setContent(resp.data);
-  }, []);
+    const resp = await axios.get('http://localhost:8000/boards/board/' + id);
+    setContent(resp.data.data);
+  }, [setContent, id]);
 
   useEffect(() => {
     getBoard();
@@ -51,18 +51,17 @@ const BoardDetail = () => {
             <div className='col-sm-12'>
               <table className='table'>
                 <tbody>
-                  {content.data.map}
-                  <tr key={board.id}>
+                  <tr>
                     <td>타이틀</td>
-                    <td>{title}</td>
+                    <td>{content.title}</td>
                   </tr>
                   <tr>
                     <td>내용</td>
-                    <td>{content}</td>
+                    <td>{content.content}</td>
                   </tr>
                   <tr>
                     <td>작성일</td>
-                    <td>{createAt}</td>
+                    <td>{content.createAt}</td>
                   </tr>
                   <tr>
                     <td colSpan={2} className='text-end'>

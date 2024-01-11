@@ -46,7 +46,7 @@ const boardDAO = {
       console.log('board try 시작');
       conn = await getPool().getConnection();
       const [resp] = await conn.query(sql.board, [item.id]);
-      callback({ status: 200, message: 'OK', data: resp });
+      callback({ status: 200, message: 'OK', data: resp[0] });
       console.log(resp, 'board callback 완료');
     } catch (error) {
       console.log(error.message);

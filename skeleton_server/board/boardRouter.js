@@ -10,8 +10,12 @@ router.get('/boardList', function (req, res, next) {
   });
 });
 
-// router.post('/insert', function(req, res, next) => {
-
-// })
+router.post('/insert', function (req, res, next) {
+  console.log('board router, insert..........');
+  const boardContent = req.body;
+  boardDAO.insert(boardContent, (resp) => {
+    res.send(resp);
+  });
+});
 
 module.exports = router;

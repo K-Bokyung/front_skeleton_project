@@ -71,7 +71,9 @@ const BoardList = () => {
                 <tfoot>
                   <tr>
                     <td colSpan={5} className='text-end'>
-                      <button className='btn btn-primary btn-sm'>ADD</button>
+                      <Link to='/board/insert'>
+                        <button className='btn btn-primary btn-sm'>ADD</button>
+                      </Link>
                     </td>
                   </tr>
                 </tfoot>

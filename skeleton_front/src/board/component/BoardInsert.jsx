@@ -1,8 +1,21 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BoardInsert = () => {
+  const navigate = useNavigate();
+
+  const [boardContent, setBoardContent] = useState({ name: '', title: '', content: '' });
+
+  const changeBoardContent = useCallback((e) => {
+    setBoardContent((boardContent) => ({ ...boardContent, [e.target.name]: e.target.value }));
+  }, []);
+
+  const addBoardContent = useCallback(async () => {
+    const resp = await axios.post('http://localhost:8000/boards/insert', boardContent);
+    setBoardContent(resp.boardContent);
+  }, [boardContent, navigate]);
+
   return (
     <main id='main'>
       {/* <!-- ======= Intro Single ======= --> */}
@@ -39,13 +52,25 @@ const BoardInsert = () => {
                   <tr>
                     <td>이름</td>
                     <td>
-                      <input type='text' className='form-control' name='name' />
+                      <input
+                        type='text'
+                        className='form-control'
+                        name='name'
+                        value={boardContent.name}
+                        onChange={changeBoardContent}
+                      />
                     </td>
                   </tr>
                   <tr>
                     <td>타이틀</td>
                     <td>
-                      <input type='text' className='form-control' name='title' />
+                      <input
+                        type='text'
+                        className='form-control'
+                        name='title'
+                        value={boardContent.title}
+                        onChange={changeBoardContent}
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -56,17 +81,27 @@ const BoardInsert = () => {
                         rows='10'
                         name='content'
                         className='form-control'
+                        value={boardContent.content}
+                        onChange={changeBoardContent}
                       ></textarea>
                     </td>
                   </tr>
                   <tr>
                     <td colSpan={2} className='text-end'>
-                      <button type='button' className='btn btn-primary btn-sm'>
-                        취소
-                      </button>{' '}
-                      <button type='submit' className='btn btn-warning btn-sm'>
-                        입력
-                      </button>
+                      <Link to='/board/list'>
+                        <button type='button' className='btn btn-primary btn-sm'>
+                          취소
+                        </button>
+                      </Link>{' '}
+                      <Link to='/board/list'>
+                        <button
+                          type='submit'
+                          className='btn btn-warning btn-sm'
+                          onClick={addBoardContent}
+                        >
+                          입력
+                        </button>
+                      </Link>
                     </td>
                   </tr>
                 </tbody>

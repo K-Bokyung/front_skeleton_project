@@ -5,16 +5,16 @@ import axios from 'axios';
 const BoardList = () => {
   const navigate = useNavigate();
 
-  const [boardList, setboardList] = useState({ status: '', message: '', data: [] });
+  const [boardList, setBoardList] = useState({ status: '', message: '', data: [] });
 
   const getBoardList = useCallback(async () => {
-    const resp = await axios.get('http://localhost:8000/board/boardList');
-    setboardList(resp.data);
+    const resp = await axios.get('http://localhost:8000/boards/boardList');
+    setBoardList(resp.data);
   });
 
   useEffect(() => {
     getBoardList();
-  }, []);
+  }, [getBoardList]);
 
   return (
     <main id='main'>
@@ -60,6 +60,7 @@ const BoardList = () => {
                 <tbody>
                   {boardList.data.map((board) => (
                     <tr key={board.id}>
+                      <td>{board.id}</td>
                       <td>{board.title}</td>
                       <td>{board.name}</td>
                       <td>{board.createAt}</td>
@@ -69,7 +70,9 @@ const BoardList = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colSpan={5} className='text-end'></td>
+                    <td colSpan={5} className='text-end'>
+                      <button className='btn btn-primary btn-sm'>ADD</button>
+                    </td>
                   </tr>
                 </tfoot>
               </table>

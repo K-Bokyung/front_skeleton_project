@@ -7,7 +7,7 @@ const BoardMain = () => {
     <div>
       <h2>Board Main</h2>
       <Routes>
-        <Route path='/boardList' element={<BoardList />} />
+        <Route path='/list' element={<BoardList />} />
       </Routes>
     </div>
   );

@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 // http://localhost:8000/
 app.use('/', homeRouter);
 app.use('/users', userRouter);
-app.use('/board', boardRouter);
+app.use('/boards', boardRouter);
 
 // 404
 app.use((req, res, next) => {

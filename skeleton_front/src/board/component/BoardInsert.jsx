@@ -1,20 +1,27 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BoardInsert = () => {
   const navigate = useNavigate();
 
   const [boardContent, setBoardContent] = useState({ name: '', title: '', content: '' });
 
-  const changeBoardContent = useCallback((e) => {
-    setBoardContent((boardContent) => ({ ...boardContent, [e.target.name]: e.target.value }));
-  }, []);
+  const changeBoardContent = useCallback(
+    (e) => {
+      setBoardContent((boardContent) => ({ ...boardContent, [e.target.name]: e.target.value }));
+    },
+    [boardContent]
+  );
 
-  const addBoardContent = useCallback(async () => {
-    const resp = await axios.post('http://localhost:8000/boards/insert', boardContent);
-    setBoardContent(resp.boardContent);
-  }, [boardContent, navigate]);
+  const addBoardContent = useCallback(
+    async (e) => {
+      e.preventDefault();
+      await axios.post('http://localhost:8000/boards/insert', boardContent);
+      navigate('/board/list');
+    },
+    [navigate, boardContent]
+  );
 
   return (
     <main id='main'>
@@ -88,20 +95,20 @@ const BoardInsert = () => {
                   </tr>
                   <tr>
                     <td colSpan={2} className='text-end'>
-                      <Link to='/board/list'>
-                        <button type='button' className='btn btn-primary btn-sm'>
-                          취소
-                        </button>
-                      </Link>{' '}
-                      <Link to='/board/list'>
-                        <button
-                          type='submit'
-                          className='btn btn-warning btn-sm'
-                          onClick={addBoardContent}
-                        >
-                          입력
-                        </button>
-                      </Link>
+                      <button
+                        type='button'
+                        className='btn btn-primary btn-sm'
+                        onClick={() => navigate('/board/list')}
+                      >
+                        취소
+                      </button>{' '}
+                      <button
+                        type='submit'
+                        className='btn btn-warning btn-sm'
+                        onClick={addBoardContent}
+                      >
+                        입력
+                      </button>
                     </td>
                   </tr>
                 </tbody>

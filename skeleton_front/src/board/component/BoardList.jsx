@@ -10,7 +10,7 @@ const BoardList = () => {
   const getBoardList = useCallback(async () => {
     const resp = await axios.get('http://localhost:8000/boards/boardList');
     setBoardList(resp.data);
-  });
+  }, []);
 
   useEffect(() => {
     getBoardList();
@@ -61,7 +61,9 @@ const BoardList = () => {
                   {boardList.data.map((board) => (
                     <tr key={board.id}>
                       <td>{board.id}</td>
-                      <td>{board.title}</td>
+                      <td>
+                        <Link to={'/board/detail/' + board.id}>{board.title}</Link>
+                      </td>
                       <td>{board.name}</td>
                       <td>{board.createAt}</td>
                       <td>{board.cnt}</td>
@@ -71,9 +73,12 @@ const BoardList = () => {
                 <tfoot>
                   <tr>
                     <td colSpan={5} className='text-end'>
-                      <Link to='/board/insert'>
-                        <button className='btn btn-primary btn-sm'>ADD</button>
-                      </Link>
+                      <button
+                        className='btn btn-primary btn-sm'
+                        onClick={() => navigate('/board/insert')}
+                      >
+                        ADD
+                      </button>
                     </td>
                   </tr>
                 </tfoot>

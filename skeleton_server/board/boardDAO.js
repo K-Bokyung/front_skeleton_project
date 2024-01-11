@@ -4,6 +4,8 @@ const getPool = require('../common/pool');
 const sql = {
   boardList: 'SELECT * FROM board',
   insert: 'INSERT INTO board (name, title, content) VALUES (?, ?, ?)',
+  // where문 추가
+  board: 'SELECT * FROM board WHERE id = ?',
 };
 
 const boardDAO = {
@@ -17,7 +19,7 @@ const boardDAO = {
       console.log('boardlist callback 완료');
       callback({ status: 200, message: 'OK', data: resp });
     } catch (error) {
-      console.log('dao boardlist error');
+      console.log(error.message);
       return { status: 500, message: '조회 실패', error: error };
     } finally {
       console.log('dao boardlist finally');
@@ -25,12 +27,11 @@ const boardDAO = {
     }
   },
   insert: async (item, callback) => {
-    const { name, title, content } = item;
     let conn = null;
     try {
       console.log('insert try 시작');
       conn = await getPool().getConnection();
-      const [resp] = await conn.query(sql.insert);
+      const [resp] = await conn.query(sql.insert, [item.name, item.title, item.content]);
       callback({ status: 200, message: 'OK', data: resp });
       console.log(resp, 'insert callback 완료');
     } catch (error) {
@@ -39,6 +40,7 @@ const boardDAO = {
       if (conn !== null) conn.release();
     }
   },
+  board: async (item, callback) => {},
 };
 
 module.exports = boardDAO;

@@ -35,6 +35,12 @@ router.post('/delete/:id', function (req, res, next) {
   });
 });
 
-router.post('/update', function (req, res, next) {});
+router.post('/update', function (req, res, next) {
+  console.log('boardRouter, update..........');
+  const data = req.body;
+  boardDAO.update(data, (resp) => {
+    res.json(resp);
+  });
+});
 
 module.exports = router;

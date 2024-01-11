@@ -7,6 +7,28 @@ const BoardUpdate = () => {
   // 컴포넌트가 나오자 마자.. 서버에서 데이터 획득..
   // 획득한 데이터가 화면에 출력되고.. 유저가 수정...
   // 즉 서버 연동은 2번 발생한다..
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [update, setUpdate] = useState({ id: '', name: '', email: '', title: '', content: '' });
+
+  const loadContent = async () => {
+    const resp = await axios.get('http://localhost:8000/boards/board/' + id);
+    setUpdate(resp.data.data);
+  };
+
+  const changeBoardContent = (e) => {
+    setUpdate({ ...update, [e.target.name]: e.target.value });
+  };
+
+  const updateBoard = async () => {
+    await axios.post('http://localhost:8000/boards/update/', update);
+    navigate('/board/list');
+  };
+
+  useEffect(() => {
+    loadContent();
+  }, []);
+
   return (
     <main id='main'>
       {/* <!-- ======= Intro Single ======= --> */}
@@ -47,7 +69,7 @@ const BoardUpdate = () => {
                         type='text'
                         className='form-control'
                         name='title'
-                        value={boardContent.title}
+                        value={update.title}
                         onChange={changeBoardContent}
                       />
                     </td>
@@ -60,7 +82,7 @@ const BoardUpdate = () => {
                         rows='10'
                         name='content'
                         className='form-control'
-                        value={boardContent.content}
+                        value={update.content}
                         onChange={changeBoardContent}
                       ></textarea>
                     </td>
